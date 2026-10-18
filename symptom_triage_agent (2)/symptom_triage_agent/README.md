@@ -48,8 +48,7 @@ run_fase3.py             Fase 3: ejecuta 6 escenarios x 10 repeticiones y arma l
 fase3/umbrales.json      umbrales y escenarios FIJADOS antes de ejecutar (hacer commit antes de correr)
 fase3/diagnostico.py     causas de las medidas incumplidas y "qué cambiaría en el agente"
 fase3_resultados/        tabla, conteos y logs de la corrida oficial
-fase3_resultados_corrida1_antes_de_corregir/   primera corrida, con las fallas reales encontradas
-docs/DISENO_VS_IMPLEMENTACION.md   cambios frente al diseño y su justificación
+fase3_resultados_corrida1_antes_de_corregir/   primera corrida, con las fallas reales encontradas, se realizaron cambios frente al diseño y su justificación
 ```
 
 ## Dónde está el ciclo percepción → decisión → acción
@@ -77,7 +76,7 @@ Todo en `triage/agent.py`, clase `SymptomTriageAgent`:
 
 **No se usa ningún LLM ni librería externa.** Todo el razonamiento (creencia, utilidad, selección de
 preguntas, aprendizaje, banderas rojas) lo hace el código de `triage/agent.py`. El simulador
-reemplaza al entorno real. Ver `docs/DISENO_VS_IMPLEMENTACION.md`.
+reemplaza al entorno real.
 
 ## Resultados de referencia (prueba congelada, promedio de 5 semillas)
 
@@ -124,17 +123,16 @@ aprendizaje, cuestionario fijo, la enfermera (`KTAS_RN`) y la clase mayoritaria.
 - `Chief_complain` (el texto del motivo de consulta) **no se usa en la decisión**; en KTAS el motivo de
   consulta pesa mucho, así que es probable que el agente quede por debajo de la enfermera.
   Incorporarlo requiere procesamiento de lenguaje natural (trabajo futuro).
-- Los umbrales (p. ej. SpO2 < 90 % = "muy baja") son convenciones clínicas comunes que yo asumí, no
+- Los umbrales (p. ej. SpO2 < 90 % = "muy baja") son convenciones clínicas comunes que se asumieron, no
   reglas oficiales de KTAS; el dataset no documenta las unidades de cada columna.
 - Hasta 55 % de `Saturation` y 44 % de `NRS_pain` están sin dato. Se tratan como "no sé", no como 0.
 - No hay identificador de paciente: no se puede garantizar que una persona no quede en entrenamiento y
   prueba a la vez, y las 1.267 filas pueden no ser pacientes distintos.
 - Con datos reales no se aplican ruido, abandono ni deterioro simulados; solo la cola es simulada.
 - KTAS no es Manchester ni ESI (es una variante de CTAS con cinco niveles equivalentes).
-- El cargador se probó con un CSV mínimo que replica el formato descrito; **los resultados con el
-  archivo real los debes generar tú**.
+- El cargador se probó con un CSV mínimo que replica el formato descrito;
 - Durante el entrenamiento el agente pregunta todo (exploración) para poder aprender; en la prueba usa su
-  política de utilidad. Ver `docs/DISENO_VS_IMPLEMENTACION.md`.
+  política de utilidad.
 
 ## Fase 3 — Pruebas basadas en las medidas de desempeño
 
@@ -144,12 +142,9 @@ python run_fase3.py --keep-logs all    # conserva los logs de las 10 repeticione
 python fase3/diagnostico.py            # por qué fallaron M1 y M4 y qué cambiaría en el agente
 ```
 
-Informe completo (tabla de la rúbrica, escenarios y análisis): `docs/FASE3_INFORME.md`.
-
 - 8 medidas (M1 es la del diseño; M2-M8 derivan de sus riesgos y requisitos), 6 escenarios (normal, límite y
   3 de falla esperada), 10 repeticiones x 100 pacientes. Cada medida declara fórmula, umbral y
   escenario de aceptación en `fase3/umbrales.json`; el arnés imprime su SHA-256.
 - **Resultado: 6 de 8 medidas cumplidas.** No se cumplen M1 (coincidencia exacta, 60,5 % vs ≥ 80 %) y
   M4 (escalamiento ante riesgo vital, 87,1 % vs ≥ 90 %). Las causas están analizadas en el informe.
-- Para que el "umbral fijado antes" sea demostrable, haz **commit de `fase3/umbrales.json` antes de ejecutar**
-  y cita ese commit en el informe.
+- Para que el "umbral fijado antes" sea demostrable, haz **commit de `fase3/umbrales.json` antes de ejecutar**.
