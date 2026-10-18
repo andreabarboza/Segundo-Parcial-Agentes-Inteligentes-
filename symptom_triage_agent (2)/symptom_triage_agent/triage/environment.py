@@ -1,17 +1,5 @@
-"""Entorno simulado del servicio de urgencias.
+"""Entorno simulado del servicio de urgencias."""
 
-Propiedades (sección 3 del diseño):
-- Parcialmente observable: el nivel real y los valores reales están ocultos; el agente
-  solo ve lo que el paciente reporta.
-- Estocástico: los síntomas se muestrean, y el paciente se equivoca o no sabe responder.
-- Secuencial: cada pregunta cambia lo que el agente sabe.
-- Dinámico: el paciente puede empeorar o abandonar durante la conversación, y la cola
-  de atención cambia sola.
-- Agente único.
-
-Sensores simulados (sección 5): respuestas del paciente (chat), historia clínica
-(solo con consentimiento) y estado de la cola (API de agendamiento).
-"""
 import math
 import random
 
