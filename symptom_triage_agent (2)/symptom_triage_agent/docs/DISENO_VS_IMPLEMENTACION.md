@@ -7,7 +7,7 @@ Lo que cambió respecto al documento de diseño (Fase 1) y por qué.
 | Aspecto | Diseño | Implementación | Justificación |
 |---|---|---|---|
 | Entorno | Servicio de urgencias real | Simulador (`triage/environment.py`) | No hay acceso a un servicio de urgencias ni a pacientes reales; el simulador genera las percepciones de la sección 5 |
-| Entrada de lenguaje natural | NLP: comprensión de intención y extracción de entidades | Las respuestas del paciente ya llegan como categorías (p. ej. `dificultad_severa`) | El simulador no genera texto libre. El módulo de NLP queda como trabajo futuro (ver sección 3) |
+| Entrada de lenguaje natural | NLP: comprensión de intención y extracción de entidades | Las respuestas del paciente ya llegan como categorías (p. ej. `dificultad_severa`) | El simulador no genera texto libre. El módulo de NLP queda como trabajo futuro |
 | Protocolo | Manchester o ESI | Escala de 5 niveles genérica con costo asimétrico; sin las reglas completas de Manchester ni ESI | Implementar un protocolo completo excede el alcance; los 5 niveles son los mismos |
 | Aprendizaje | Fine-tuning sobre cuestionarios y casos históricos | Actualización de conteos bayesiana con la corrección del clínico | Es un aprendizaje por retroalimentación sencillo y verificable; no se dispone de un conjunto de casos reales para fine-tuning |
 | Escalamiento por riesgo vital | Escalar de inmediato | Se confirma **una vez** la respuesta de riesgo vital; si no se puede confirmar ("no sé") o el paciente se va, se escala igual | Las respuestas tienen ~10 % de error: sin confirmar, ~14 % de pacientes disparaba una falsa alarma y quedaba en nivel 1-2. Se detectó al medir los primeros resultados. Costo: una pregunta más ante una emergencia real |
@@ -81,5 +81,3 @@ ESI.
 | El agente se caía ante respuestas fuera de dominio (`ValueError`, 35 casos) | Una entrada inválida se trata como "no sé" y se registra como advertencia | M7 pasó de 79,8 % a 100 % |
 | Solo 87,1 % de los pacientes con riesgo vital se escalaban (M4) | Se añadió la opción `screening` (tamizaje obligatorio de respiración y conciencia). **Apagada por defecto**: los resultados oficiales no la incluyen | En el diagnóstico, M4 sube a 94,5 % con 3,10 preguntas |
 | M1 (coincidencia exacta) queda en ~60 % | Sin cambio en el agente: ni más entrenamiento, ni menor costo de pregunta, ni tamizaje lo llevan cerca de 80 % (máx. 65,2 %) | Se propone validar con datos reales y fijar la meta relativa a la referencia humana |
-
-Los umbrales de `fase3/umbrales.json` no se modificaron tras ver resultados.
