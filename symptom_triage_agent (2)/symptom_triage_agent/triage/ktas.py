@@ -3,10 +3,6 @@
 Fuente: https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application
 Origen del estudio: Moon et al. (2019), PLOS ONE, doi:10.1371/journal.pone.0216972
 
-Formato del CSV (según la guía consultada; verifícalo con tu archivo): separador ';',
-codificación cp1254, 24 columnas, 1.267 filas; datos faltantes marcados como "", "??" o
-"#BOŞ!"; algunos decimales con coma ("5,00").
-
 Qué usa el agente (solo lo disponible al momento del triage):
     Mental, Saturation, RR, HR, SBP, BT, NRS_pain/Pain  -> síntomas que el agente "pregunta"
     Age, Arrival mode, Injury                          -> datos de admisión (se conocen al llegar)
@@ -14,12 +10,6 @@ Objetivo / referencia:  KTAS_expert (objetivo), KTAS_RN (enfermera, solo para co
 NO se usa nunca: Diagnosis in ED, Disposition, Length of stay_min, KTAS duration_min,
                  Error_group, mistriage (ocurren después del triage o se derivan de la etiqueta).
 Group y Patients number per hour no entran al modelo (solo sirven para análisis).
-Chief_complain (texto) se conserva para el resumen clínico, pero la lógica de decisión
-todavía NO lo usa: requeriría procesamiento de lenguaje natural.
-
-Los umbrales de discretización son convenciones clínicas habituales asumidas por mí, NO
-reglas oficiales de KTAS; el dataset no documenta las unidades de cada columna, así que
-revisa `describe_ranges()` antes de confiar en los resultados.
 """
 import hashlib
 import random
