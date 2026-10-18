@@ -1,0 +1,4 @@
+episode,predicted,clinician,true_level,questions,escalated,incomplete,used_ehr,phase
+0,4,5,5,2,False,False,True,train
+1,4,4,4,2,False,False,True,train
+2,4,4,4,2,False,False,False,train

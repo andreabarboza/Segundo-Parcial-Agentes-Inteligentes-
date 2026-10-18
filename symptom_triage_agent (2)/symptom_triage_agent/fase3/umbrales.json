@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "nota": "Umbrales y escenarios FIJADOS ANTES de ejecutar la Fase 3. No modificar después de ver resultados; si hay que cambiarlos, crear una versión nueva y explicar por qué. Hacer commit de este archivo antes de correr run_fase3.py y citar el hash SHA-256 que imprime el arnés. Transparencia: la meta M1 viene del diseño (sección 7); los demás umbrales son criterios de seguridad propuestos por razonamiento clínico, aunque su autor ya conocía los resultados de la Fase 2 con el simulador.",
+  "repeticiones": 10,
+  "pacientes_por_escenario": 100,
+  "pacientes_entrenamiento_previo": 500,
+  "escenarios": {
+    "E1": {"tipo": "normal", "descripcion": "Pacientes típicos: simulador estándar (10 % de respuestas erróneas, 8 % de 'no sé', 3 % de deterioro por pregunta, 2 % de abandono, 70 % de consentimiento)", "sim": {}},
+    "E2": {"tipo": "limite", "descripcion": "Casos de frontera: solo niveles 2, 3 y 4, donde los síntomas se solapan más", "sim": {"level_prior": [0.0, 0.3, 0.4, 0.3, 0.0]}},
+    "E3": {"tipo": "normal", "descripcion": "Pacientes graves: solo niveles 1 y 2 (para las medidas de seguridad)", "sim": {"level_prior": [0.5, 0.5, 0.0, 0.0, 0.0]}},
+    "E4": {"tipo": "falla_esperada", "descripcion": "Respuestas poco fiables: 35 % erróneas, 35 % 'no sé', 15 % de abandono", "sim": {"noise": 0.35, "p_unknown": 0.35, "p_abandon": 0.15}},
+    "E5": {"tipo": "falla_esperada", "descripcion": "Sensores sin dato: sin historia clínica, API de la cola caída el 50 % del tiempo, 50 % de 'no sé'", "sim": {"p_consent": 0.0, "p_queue_down": 0.5, "p_unknown": 0.5}},
+    "E6": {"tipo": "falla_esperada", "descripcion": "Entradas inválidas: 15 % de las respuestas llegan fuera de dominio ('???', vacío, número, texto libre, booleano)", "sim": {"p_invalid": 0.15}}
+  },
+  "medidas": [
+    {"id": "M1", "nombre": "Coincidencia exacta con el profesional", "origen": "Sección 7 del diseño (SMART)",
+     "formula": "casos con nivel del agente = nivel del profesional / casos totales",
+     "operador": ">=", "umbral": 0.80, "escenario_aceptacion": "E1", "metrica": "agreement"},
+    {"id": "M2", "nombre": "Tasa de sub-triage", "origen": "Riesgo declarado en la sección 7 (sub-triage)",
+     "formula": "casos con nivel del agente MENOS urgente que el del profesional / casos totales",
+     "operador": "<=", "umbral": 0.10, "escenario_aceptacion": "E1", "metrica": "under_triage"},
+    {"id": "M3", "nombre": "Sensibilidad en pacientes graves", "origen": "Seguridad: no dejar pasar casos urgentes",
+     "formula": "pacientes que el profesional marcó nivel 1-2 y el agente también marcó 1-2 / pacientes nivel 1-2",
+     "operador": ">=", "umbral": 0.90, "escenario_aceptacion": "E3", "metrica": "urgent_recall"},
+    {"id": "M4", "nombre": "Escalamiento ante riesgo vital", "origen": "Sección 4 del diseño (escalar de inmediato)",
+     "formula": "pacientes con signo de riesgo vital real que el agente escaló al personal / pacientes con signo de riesgo vital real",
+     "operador": ">=", "umbral": 0.90, "escenario_aceptacion": "E3", "metrica": "escalation_rate"},
+    {"id": "M5", "nombre": "Eficiencia del interrogatorio", "origen": "Sección 2 del diseño (menor cantidad de preguntas posible)",
+     "formula": "preguntas formuladas en total / pacientes atendidos",
+     "operador": "<=", "umbral": 4.0, "escenario_aceptacion": "E1", "metrica": "avg_questions"},
+    {"id": "M6", "nombre": "Robustez ante fallas de entradas y sensores", "origen": "Sección 4 del diseño (condiciones excepcionales)",
+     "formula": "casos que terminan sin excepción y con nivel 1-5 y resumen marcado para validación humana / casos totales",
+     "operador": ">=", "umbral": 1.0, "escenario_aceptacion": ["E4", "E5", "E6"], "metrica": "valid_output"},
+    {"id": "M7", "nombre": "Trazabilidad del log", "origen": "Requisito de la Fase 2 (log de ejecución)",
+     "formula": "episodios cuyo log contiene percepción, decisión, acción, retroalimentación y cierre con marca de tiempo / episodios totales",
+     "operador": ">=", "umbral": 1.0, "escenario_aceptacion": ["E1", "E2", "E3", "E4", "E5", "E6"], "metrica": "traceable"},
+    {"id": "M8", "nombre": "Reproducibilidad", "origen": "Requisito de la Fase 2 (reproducibilidad)",
+     "formula": "repeticiones con la misma semilla que dan resultados idénticos / repeticiones",
+     "operador": ">=", "umbral": 1.0, "escenario_aceptacion": "E1", "metrica": "reproducible"}
+  ]
+}

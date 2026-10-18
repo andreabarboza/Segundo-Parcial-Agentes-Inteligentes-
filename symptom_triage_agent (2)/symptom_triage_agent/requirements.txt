@@ -1,0 +1,5 @@
+# Agente y simulador: solo biblioteca estándar de Python 3.9+.
+# Modo con datos reales (run_ktas.py):
+pandas>=2.0
+# Solo para las pruebas:
+pytest>=7

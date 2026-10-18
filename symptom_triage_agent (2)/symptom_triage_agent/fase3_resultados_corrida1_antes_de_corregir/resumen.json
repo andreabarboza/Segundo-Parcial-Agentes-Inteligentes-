@@ -1,0 +1,66 @@
+[
+ {
+  "id": "M1",
+  "medida": "Coincidencia exacta con el profesional",
+  "media": 0.605,
+  "umbral": 0.8,
+  "operador": ">=",
+  "cumple": false
+ },
+ {
+  "id": "M2",
+  "medida": "Tasa de sub-triage",
+  "media": 0.076,
+  "umbral": 0.1,
+  "operador": "<=",
+  "cumple": true
+ },
+ {
+  "id": "M3",
+  "medida": "Sensibilidad en pacientes graves",
+  "media": 0.9388060806687228,
+  "umbral": 0.9,
+  "operador": ">=",
+  "cumple": true
+ },
+ {
+  "id": "M4",
+  "medida": "Escalamiento ante riesgo vital",
+  "media": 0.871326415296084,
+  "umbral": 0.9,
+  "operador": ">=",
+  "cumple": false
+ },
+ {
+  "id": "M5",
+  "medida": "Eficiencia del interrogatorio",
+  "media": 1.956,
+  "umbral": 4.0,
+  "operador": "<=",
+  "cumple": true
+ },
+ {
+  "id": "M6",
+  "medida": "Robustez ante fallas de entradas y sensores",
+  "media": 0.5963333333333334,
+  "umbral": 1.0,
+  "operador": ">=",
+  "cumple": false
+ },
+ {
+  "id": "M7",
+  "medida": "Trazabilidad del log",
+  "media": 0.7981666666666667,
+  "umbral": 1.0,
+  "operador": ">=",
+  "cumple": false
+ },
+ {
+  "id": "M8",
+  "medida": "Reproducibilidad",
+  "media": 1.0,
+  "umbral": 1.0,
+  "operador": ">=",
+  "cumple": true
+ }
+]
