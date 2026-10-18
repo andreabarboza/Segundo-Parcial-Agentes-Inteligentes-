@@ -1,21 +1,5 @@
-"""Symptom Triage Agent: agente basado en utilidad con aprendizaje.
+"""Symptom Triage Agent: agente basado en utilidad con aprendizaje."""
 
-Ciclo del agente (requisito de la Fase 2), en los tres métodos marcados:
-    percepción  -> SymptomTriageAgent.perceive()
-    decisión    -> SymptomTriageAgent.decide()
-    acción      -> SymptomTriageAgent.act()
-
-Por qué es "basado en utilidad": decide comparando alternativas con una función de
-utilidad. Cada nivel de urgencia tiene un costo de error asimétrico (sub-triage pesa
-más que sobre-triage) y cada pregunta cuesta tiempo. El agente pregunta solo mientras
-la reducción esperada del costo de error supera el costo de preguntar.
-
-Por qué "con aprendizaje": con la corrección del clínico actualiza sus tablas de
-verosimilitud P(respuesta | nivel) y la distribución previa de niveles.
-
-Memoria: corto plazo = evidencia y preguntas ya hechas en la conversación;
-largo plazo = historia clínica (con consentimiento) + tablas aprendidas.
-"""
 from dataclasses import dataclass, field
 
 from .features import (FEATURES as DEFAULT_FEATURES, LEVELS, LEVEL_NAMES,
